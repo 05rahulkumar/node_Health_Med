@@ -10,7 +10,7 @@ module.exports = {
         InsertNested: 'Succesfully Inserted Nested data',
         cartCreate: 'Product added into cart successfully',
         cartDelete: 'Remove product in cart successfully',
-
+        successFully:'Order Successfully Placed'
     },
     er: {
         Something_Went_Wrong: 'Something went wrong. Please again later',
