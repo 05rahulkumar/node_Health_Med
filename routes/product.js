@@ -9,5 +9,5 @@ route.get('/product',productController.getProduct);
 route.delete('/product/:_id',productController.deleteProduct);
 route.put('/product/:_id',upload.single('image'),productController.updateProduct);
 route.get('/product/:_id',productController.getProductById);
-
+route.get('/product/search/:key',productController.searchProduct);
 module.exports = route;

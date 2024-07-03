@@ -11,6 +11,9 @@ let cart = require('../routes/cart');
 let address = require('../routes/address');
 let orderSummary = require('../routes/orderSummary');
 let order = require('../routes/order');
+let tracking = require('../routes/tracking');
+let orderRetun = require('../routes/orderReturn');
+let subscriber = require('../routes/subscribe');
 
 
 route.use('',user);
@@ -25,5 +28,8 @@ route.use('',cart);
 route.use('',address);
 route.use('',orderSummary);
 route.use('',order);
+route.use('',tracking);
+route.use('',orderRetun);
+route.use('',subscriber);
 
 module.exports=route

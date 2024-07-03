@@ -12,5 +12,6 @@ route.post('/login',signup.login);
 
 
 route.get('/profile', auth.isAuth, profile.profile);
+route.put('/profile/:_id', auth.isAuth, profile.updateProfile);
 
 module.exports=route;

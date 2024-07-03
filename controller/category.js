@@ -2,18 +2,20 @@ const categoryModel = require('../models/categorySchema');
 let msg = require('../Services/responseMSG');
 
 module.exports = {
-createCategory: async (req, res) => {
-    let defaultMsg = req.headers.defaultLang ? req.headers.defaultLang : 'en';
-    try {
-        const { name } = req.body;
-        let image = req.file ? req.file.path.replace(/\\/g, '/') : null;
-        const newCategory = new categoryModel({ name, image });
-        const result = await newCategory.save();
-        res.status(201).json({ success: true, msg: msg[defaultMsg].Create, result });
-    } catch (err) {
-        return res.status(404).json({ success: false, msg: msg[defaultMsg].Something_Went_Wrong, Error: err.message, language: defaultMsg, err });
-    }
-},
+    createCategory: async (req, res) => {
+        let defaultMsg = req.headers.defaultLang ? req.headers.defaultLang : 'en';
+        try {
+            const { name, subcategories } = req.body;
+            let image = req.file ? req.file.path.replace(/\\/g, '/') : null;
+            // Parse subcategories if provided
+            let parsedSubcategories = subcategories ? JSON.parse(subcategories) : [];
+            const newCategory = new categoryModel({ name, image, subcategories: parsedSubcategories });
+            const result = await newCategory.save();
+            res.status(201).json({ success: true, msg: msg[defaultMsg].Create, result });
+        } catch (err) {
+            return res.status(404).json({ success: false, msg: msg[defaultMsg].Something_Went_Wrong, Error: err.message, language: defaultMsg, err });
+        }
+    },
 getCategories: async (req, res) => {
     let defaultMsg = req.headers.defaultLang ? req.headers.defaultLang : 'en';
     try {
@@ -38,6 +40,10 @@ updateCategory: async (req, res) => {
         let updateData = { name: req.body.name };
         if (req.file) {
             updateData.image = req.file.path.replace(/\\/g, '/');
+        }
+        // Parse subcategories if provided
+        if (req.body.subcategories) {
+            updateData.subcategories = JSON.parse(req.body.subcategories);
         }
         const data = await categoryModel.findOneAndUpdate({ _id: req.params._id }, updateData, { new: true });
         if (!data) {

@@ -45,16 +45,13 @@ module.exports = {
     },
 
     updateBanner: async (req, res) => {
+        let defaultMsg = req.headers.defaultLang ? req.headers.defaultLang : 'en';
         try {
-            const { img, title } = req.body;
-            const updatedBanner = await Banner.findByIdAndUpdate(req.params.id, { img, title }, { new: true });
-            if (!updatedBanner) {
-                return res.status(404).json({ success: false, message: "Banner not found" });
-            }
-            res.status(200).json({ success: true, message: "Banner updated successfully", banner: updatedBanner });
-        } catch (error) {
-            res.status(500).json({ success: false, message: "Something went wrong", error: error.message });
-        }
+            let data = await Banner.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }); // id send in req body  
+            res.status(202).json({ success: true, msg: "Banner Updated successfully", data })
+        }    catch (err) {
+                    return res.status(500).json({ success: false, msg: msg[defaultMsg].Something_Went_Wrong, Error: err.message, language: defaultMsg, err })
+        }        
     },
 
     deleteBanner: async (req, res) => {

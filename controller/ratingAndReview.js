@@ -7,8 +7,8 @@ module.exports = {
     createRatingAndReview: async (req, res) => {
         let defaultMsg = req.headers.defaultLang ? req.headers.defaultLang : 'en';
         try {
-            const { userId, productId, rating, review } = req.body;
-            const newRatingAndReview = new RatingAndReview({ userId, productId, rating, review });
+            const {  productId, rating, review } = req.body;
+            const newRatingAndReview = new RatingAndReview({ productId, rating, review });
             const result = await newRatingAndReview.save();
 
             // Add the review to the product
@@ -30,7 +30,7 @@ module.exports = {
     getRatingAndReviewById: async (req, res) => {
         let defaultMsg = req.headers.defaultLang ? req.headers.defaultLang : 'en';
         try {
-            const ratingAndReview = await RatingAndReview.findById(req.params.id);
+            const ratingAndReview = await RatingAndReview.findById(req.params._id);
             if (!ratingAndReview) {
                 return res.status(404).json({ success: false, msg: msg[defaultMsg].NotFound });
             }
@@ -44,7 +44,7 @@ module.exports = {
         try {
             const { rating, review } = req.body;
             const updateData = { rating, review };
-            const ratingAndReview = await RatingAndReview.findByIdAndUpdate(req.params.id, updateData, { new: true });
+            const ratingAndReview = await RatingAndReview.findByIdAndUpdate(req.params._id, updateData, { new: true });
             if (!ratingAndReview) {
                 return res.status(404).json({ success: false, msg: msg[defaultMsg].NotFound });
             }
@@ -56,7 +56,7 @@ module.exports = {
     deleteRatingAndReview: async (req, res) => {
         let defaultMsg = req.headers.defaultLang ? req.headers.defaultLang : 'en';
         try {
-            const ratingAndReview = await RatingAndReview.findByIdAndDelete(req.params.id);
+            const ratingAndReview = await RatingAndReview.findByIdAndDelete(req.params._id);
             if (!ratingAndReview) {
                 return res.status(404).json({ success: false, msg: msg[defaultMsg].NotFound });
             }
