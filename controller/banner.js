@@ -44,14 +44,20 @@ module.exports = {
         }
     },
 
+   
     updateBanner: async (req, res) => {
         let defaultMsg = req.headers.defaultLang ? req.headers.defaultLang : 'en';
         try {
-            let data = await Banner.findOneAndUpdate({ _id: req.body._id }, req.body, { new: true }); // id send in req body  
-            res.status(202).json({ success: true, msg: "Banner Updated successfully", data })
-        }    catch (err) {
-                    return res.status(500).json({ success: false, msg: msg[defaultMsg].Something_Went_Wrong, Error: err.message, language: defaultMsg, err })
-        }        
+            let updateData = { img: req.body.img, title:req.body.title};
+          
+            const data = await Banner.findOneAndUpdate({ _id: req.params._id }, updateData, { new: true });
+            if (!data) {
+                return res.status(404).json({ success: false, msg: msg[defaultMsg].NewLaunch_Not_Found });
+            }
+            res.status(202).json({ success: true, msg: msg[defaultMsg].Update, data });
+        } catch (err) {
+            return res.status(500).json({ success: false, msg: msg[defaultMsg].Something_Went_Wrong, Error: err.message, language: defaultMsg, err });
+        }
     },
 
     deleteBanner: async (req, res) => {
