@@ -3,6 +3,7 @@ let mongoose = require('mongoose');
 
 let connectDB = async()=>{
     try{
+        mongoose.set("strictQuery", false);
         const connection = await mongoose.connect(process.env.MONGO_URI)
 
         console.log(`mongodb connection to : ${connection.connection.host}`);

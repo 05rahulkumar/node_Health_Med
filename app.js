@@ -12,7 +12,6 @@ connectDB();
 
 const indexRouter = require('./Main_Routes/index.routes');
 let port = process.env.PORT || 5000;
-
 app.use('/uploads', express.static('uploads')); // upload folder publicly accessible
 app.use('/api', indexRouter);
 
